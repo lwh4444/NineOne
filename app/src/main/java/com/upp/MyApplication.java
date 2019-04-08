@@ -16,7 +16,6 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-import com.squareup.leakcanary.LeakCanary;
 import com.upp.data.NoLimit91PornServiceApi;
 import com.upp.data.cache.CacheProviders;
 import com.upp.data.model.MyObjectBox;
@@ -164,19 +163,6 @@ public class MyApplication extends Application {
     }
 
     /**
-     * 初始化内存分析工具
-     */
-    private void initLeakCanry() {
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(this);
-        // Normal app init code...
-    }
-
-    /**
      * 初始化Retrifit网络请求
      */
     private void initRetrofit() {
@@ -242,7 +228,7 @@ public class MyApplication extends Application {
     private void initCache() {
         File cacheDir = getExternalCacheDir();
         cacheProviders = new RxCache.Builder()
-                .useExpiredDataIfLoaderNotAvailable(true)
+                .useExpiredDataIfLoaderNotAvailable(false)
                 .persistence(cacheDir, new GsonSpeaker())
                 .using(CacheProviders.class);
     }

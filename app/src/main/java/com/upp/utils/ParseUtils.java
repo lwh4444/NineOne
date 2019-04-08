@@ -146,4 +146,10 @@ public class ParseUtils {
         Logger.d("缩略图：" + thumImg);
         return videoUrl;
     }
+
+    public static String parseVideoH5ShareUrl(String html){
+        Document doc = Jsoup.parse(html);
+        String H5ShareStr = Jsoup.parse(doc.getElementById("fm-video_link").text()).select("iframe").attr("src");
+        return  H5ShareStr;
+    }
 }

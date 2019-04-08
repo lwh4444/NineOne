@@ -3,7 +3,9 @@ package com.upp.data;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * @author flymegoc
@@ -40,4 +42,15 @@ public interface NoLimit91PornServiceApi {
      */
     @GET("/v.php")
     Observable<String> getCategoryPage(@Query("category") String category, @Query("viewtype") String viewtype, @Query("page") Integer page, @Query("m") String m);
+
+    /**
+     * 破解视频地址隐藏问题
+     */
+    @Headers({
+            "Accept-Language: zh-CN,zh;q=0.9",
+            "User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36",
+            "Content-Type: multipart/form-data; session_language=cn_CN"
+    })
+    @GET
+    Observable<String> getVideoUrl(@Url String Url, @Header("X-Forwarded-For") String ipAddress);
 }

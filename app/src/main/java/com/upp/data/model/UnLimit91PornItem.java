@@ -34,6 +34,7 @@ public class UnLimit91PornItem implements Serializable {
     private String duration;
     private String info;
     private String videoUrl;
+    private String H5ShareUrl;
     private int downloadId;
     private int favorite;
 
@@ -45,6 +46,14 @@ public class UnLimit91PornItem implements Serializable {
     private Date favoriteDate;
     private Date addDownloadDate;
     private Date finshedDownloadDate;
+
+    public String getH5ShareUrl() {
+        return H5ShareUrl;
+    }
+
+    public void setH5ShareUrl(String h5ShareUrl) {
+        H5ShareUrl = h5ShareUrl;
+    }
 
     public Long getId() {
         return id;

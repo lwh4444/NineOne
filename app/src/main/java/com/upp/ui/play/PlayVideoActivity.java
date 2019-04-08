@@ -226,4 +226,6 @@ public class PlayVideoActivity extends MvpActivity<PlayVideoView, PlayVideoPrese
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

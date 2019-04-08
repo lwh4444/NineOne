@@ -1,5 +1,7 @@
 package com.upp.ui.play;
 
+import android.annotation.SuppressLint;
+
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.orhanobut.logger.Logger;
 import com.upp.MyApplication;
@@ -9,17 +11,23 @@ import com.upp.ui.download.DownloadPresenter;
 import com.upp.ui.favorite.FavoritePresenter;
 import com.upp.utils.BoxQureyHelper;
 import com.upp.utils.CallBackWrapper;
+import com.upp.utils.Constants;
 import com.upp.utils.ParseUtils;
 import com.upp.utils.RandomIPAdderssUtils;
 
 import io.objectbox.Box;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rx_cache2.DynamicKey;
 import io.rx_cache2.EvictDynamicKey;
 import io.rx_cache2.Reply;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * @author flymegoc
@@ -60,7 +68,7 @@ public class PlayVideoPresenter extends MvpBasePresenter<PlayVideoView> implemen
                 }).map(new Function<String, String>() {
             @Override
             public String apply(String s) throws Exception {
-                return ParseUtils.parseVideoPlayUrl(s);
+                return ParseUtils.parseVideoPlayUrl(getH5ShareUrl(ParseUtils.parseVideoH5ShareUrl(s)));
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new CallBackWrapper<String>() {
@@ -82,7 +90,7 @@ public class PlayVideoPresenter extends MvpBasePresenter<PlayVideoView> implemen
             @Override
             public void onError(String msg, int code) {
                 if (isViewAttached()) {
-                    getView().errorParseVideoUrl(msg+" code:"+code);
+                    getView().errorParseVideoUrl(msg + " code:" + code);
                 }
             }
         });
@@ -145,4 +153,38 @@ public class PlayVideoPresenter extends MvpBasePresenter<PlayVideoView> implemen
             }
         });
     }
+
+
+    private String getH5ShareUrl(String urlStr) {
+        final String[] result = {""};
+        String ip = RandomIPAdderssUtils.getRandomIPAdderss();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(builder.build())
+                .baseUrl(Constants.BASE_URL)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+        mNoLimit91PornServiceApi = retrofit.create(NoLimit91PornServiceApi.class);
+        mNoLimit91PornServiceApi.getVideoUrl(urlStr, ip)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new CallBackWrapper<String>() {
+            @Override
+            public void onBegin(Disposable d) {
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                getView().playVideo(s);
+                result[0] = s;
+            }
+
+            @Override
+            public void onError(String msg, int code) {
+                System.out.println(msg);
+            }
+        });
+        return result[0];
+    }
+
 }
