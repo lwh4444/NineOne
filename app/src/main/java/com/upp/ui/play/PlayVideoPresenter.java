@@ -68,7 +68,7 @@ public class PlayVideoPresenter extends MvpBasePresenter<PlayVideoView> implemen
                 }).map(new Function<String, String>() {
             @Override
             public String apply(String s) throws Exception {
-                return ParseUtils.parseVideoPlayUrl(getH5ShareUrl(ParseUtils.parseVideoH5ShareUrl(s)));
+                return getH5ShareUrl(ParseUtils.parseVideoH5ShareUrl(s));
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new CallBackWrapper<String>() {
@@ -83,7 +83,7 @@ public class PlayVideoPresenter extends MvpBasePresenter<PlayVideoView> implemen
             public void onSuccess(String s) {
                 MyApplication.getInstace().cleanCookies();
                 if (isViewAttached()) {
-                    getView().playVideo(s);
+//                    getView().playVideo(s);
                 }
             }
 
@@ -175,8 +175,8 @@ public class PlayVideoPresenter extends MvpBasePresenter<PlayVideoView> implemen
 
             @Override
             public void onSuccess(String s) {
-                getView().playVideo(s);
-                result[0] = s;
+                getView().playVideo(ParseUtils.parseVideoPlayUrl(s));
+                result[0] = ParseUtils.parseVideoPlayUrl(s);
             }
 
             @Override
