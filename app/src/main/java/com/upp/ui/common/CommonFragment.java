@@ -20,11 +20,13 @@ import com.helper.loadviewhelper.load.LoadViewHelper;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.upp.R;
 import com.upp.adapter.UnLimit91Adapter;
+import com.upp.adapter.UnLimit91CustomAdapter;
 import com.upp.data.model.UnLimit91PornItem;
 import com.upp.ui.MvpFragment;
 import com.upp.ui.main.MainActivity;
 import com.upp.ui.play.PlayVideoActivity;
 import com.upp.utils.Keys;
+import com.upp.view.VegaLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,7 @@ public class CommonFragment extends MvpFragment<CommonView, CommonPresenter> imp
     @BindView(R.id.contentView)
     SwipeRefreshLayout contentView;
 
-    private UnLimit91Adapter mUnLimit91Adapter;
+    private UnLimit91CustomAdapter mUnLimit91Adapter;
     private String category;
     private String m;
     /**
@@ -98,8 +100,8 @@ public class CommonFragment extends MvpFragment<CommonView, CommonPresenter> imp
         contentView.setOnRefreshListener(this);
 
         ArrayList<UnLimit91PornItem> mUnLimit91PornItemList = new ArrayList<>();
-        mUnLimit91Adapter = new UnLimit91Adapter(R.layout.item_right_menu_favorite, mUnLimit91PornItemList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mUnLimit91Adapter = new UnLimit91CustomAdapter(R.layout.item_right_menu_custom, mUnLimit91PornItemList);
+        recyclerView.setLayoutManager(new VegaLayoutManager());
         recyclerView.setAdapter(mUnLimit91Adapter);
         mUnLimit91Adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

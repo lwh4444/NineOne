@@ -19,15 +19,20 @@ import com.helper.loadviewhelper.load.LoadViewHelper;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.upp.R;
 import com.upp.adapter.UnLimit91Adapter;
+import com.upp.adapter.UnLimit91CustomAdapter;
 import com.upp.data.model.UnLimit91PornItem;
 import com.upp.ui.MvpFragment;
 import com.upp.ui.main.MainActivity;
 import com.upp.ui.play.PlayVideoActivity;
 import com.upp.utils.Keys;
+import com.upp.view.VegaLayoutManager;
 
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,7 +54,7 @@ public class IndexFragment extends MvpFragment<IndexView, IndexPresenter> implem
     @BindView(R.id.contentView)
     SwipeRefreshLayout contentView;
 
-    private UnLimit91Adapter mUnLimit91Adapter;
+    private UnLimit91CustomAdapter mUnLimit91Adapter;
     private List<UnLimit91PornItem> mUnLimit91PornItemList;
     private LoadViewHelper helper;
 
@@ -61,6 +66,7 @@ public class IndexFragment extends MvpFragment<IndexView, IndexPresenter> implem
         return new IndexFragment();
     }
 
+    @NotNull
     @Override
     public IndexPresenter createPresenter() {
         return new IndexPresenter();
@@ -82,12 +88,11 @@ public class IndexFragment extends MvpFragment<IndexView, IndexPresenter> implem
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
-        // Setup contentView == SwipeRefreshView
         contentView.setOnRefreshListener(this);
 
         mUnLimit91PornItemList = new ArrayList<>();
-        mUnLimit91Adapter = new UnLimit91Adapter(R.layout.item_right_menu_favorite, mUnLimit91PornItemList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mUnLimit91Adapter = new UnLimit91CustomAdapter(R.layout.item_right_menu_custom, mUnLimit91PornItemList);
+        recyclerView.setLayoutManager(new VegaLayoutManager());
         recyclerView.setAdapter(mUnLimit91Adapter);
 
         mUnLimit91Adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -103,7 +108,7 @@ public class IndexFragment extends MvpFragment<IndexView, IndexPresenter> implem
                 SwipeItemLayout swipeItemLayout = (SwipeItemLayout) view.getParent();
                 swipeItemLayout.close();
                 if (view.getId() == R.id.right_menu_favorite) {
-                    presenter.favorite((UnLimit91PornItem) adapter.getItem(position));
+                    presenter.favorite((UnLimit91PornItem) Objects.requireNonNull(adapter.getItem(position)));
                 }
             }
         });

@@ -300,7 +300,7 @@ public class MainActivity extends BaseAppCompatActivity implements NavigationVie
             Intent intent = new Intent(MainActivity.this, FavoriteActivity.class);
             startActivityWithAnimotion(intent);
             needCloseMenu = false;
-        } else if (id == R.id.nav_about){
+        } else if (id == R.id.nav_about) {
             showAboutMeDialog();
         }
         if (needCloseMenu) {
@@ -310,7 +310,7 @@ public class MainActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     private void showAboutMeDialog() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.about_me);
         builder.setView(R.layout.about_me);
         builder.show();

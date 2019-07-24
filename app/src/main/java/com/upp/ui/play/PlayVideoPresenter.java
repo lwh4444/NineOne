@@ -68,6 +68,7 @@ public class PlayVideoPresenter extends MvpBasePresenter<PlayVideoView> implemen
                 }).map(new Function<String, String>() {
             @Override
             public String apply(String s) throws Exception {
+                System.out.println("sucess:" + s);
                 return getH5ShareUrl(ParseUtils.parseVideoH5ShareUrl(s));
             }
         }).subscribeOn(Schedulers.io())

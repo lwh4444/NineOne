@@ -43,7 +43,6 @@ class IndexPresenter : MvpBasePresenter<IndexView>(), IIndex {
                         else -> {
                         }
                     }
-                    Log.i("911", responseBodyReply.data.toString())
                     responseBodyReply.data
                 }
                 .map { s ->
@@ -78,7 +77,6 @@ class IndexPresenter : MvpBasePresenter<IndexView>(), IIndex {
     private fun loadDataForNet(pullToRefresh: Boolean) {
         val indexPhpObservable = mNoLimit91PornServiceApi.indexPhp()
         indexPhpObservable.map { s ->
-            System.out.println("911s$s")
             ParseUtils.parseIndex(s)
         }
                 .subscribeOn(Schedulers.io())
