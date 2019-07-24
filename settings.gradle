@@ -1,1 +1,1 @@
-include ':app' , ':coordinatortablayout'
+include ':app'
